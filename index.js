@@ -1,6 +1,7 @@
 require('dotenv').config();
 
 const express = require('express');
+const cors = require('cors')
 const mongoose = require('mongoose');
 const mongoString = process.env.DATABASE_URL;
 
@@ -18,6 +19,17 @@ const app = express();
 
 app.use(express.json());
 
-app.listen(3000, () => {
-    console.log(`Server Started at ${3000}`)
+app.use(cors())
+
+var port = process.env.PORT || 8000;
+
+app.listen(port, () => {
+    console.log(`Server Started at ${port}`)
 })
+
+// Routes
+//const routes = require('./routes/routes');
+//app.use('/api', routes)
+
+const water = require('./routes/water');
+app.use('/api/water', water)
