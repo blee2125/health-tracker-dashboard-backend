@@ -12,4 +12,6 @@ const dataSchema = new mongoose.Schema({
     }
 })
 
+dataSchema.set('timestamps', true);
+
 module.exports = mongoose.model('Water', dataSchema)
