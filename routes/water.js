@@ -21,11 +21,12 @@ router.post('/post', async (req, res) => {
 
 //Get by date (time property) Method
 router.get('/searchByDate', async (req, res) => {
+    let searchDate = req._parsedUrl.query
+    let searchDate2 = searchDate.split('=')
+    let searchDateFinal = searchDate2[1].toString().split('+')
     try{
-        const searchDate = 'Oct 10 2022' // update to accept external value
-        const waterData = await WaterModel.find({'time': { '$regex' : searchDate, '$options' : 'i' }});
+        const waterData = await WaterModel.find({'time': { '$regex' : `${searchDateFinal[0]} ${searchDateFinal[1]} ${searchDateFinal[2]}`, '$options' : 'i' }});
         res.json(waterData)
-        console.log(waterData)
     }
     catch(error){
         res.status(500).json({message: error.message})
@@ -33,11 +34,17 @@ router.get('/searchByDate', async (req, res) => {
 })
 
 //Get by date (createdAt property) Method
-router.get('/getByDate', async (req, res) => {
+router.get('/getByDates', async (req, res) => {
     try{
         let start = new Date("2022-10-10"); // update to accept external value
-        let end = new Date("2022-10-11");
+        let end = new Date("2022-10-31");
+        console.log(start)
+
+        let curDate = new Date()
+        console.log(curDate)
+
         end.setUTCHours(23,59,59,999);
+        console.log(end.toISOString())
         const waterData = await WaterModel.find({'createdAt': {$gte: start, $lt: end}});
         res.json(waterData)
         console.log(waterData)
@@ -70,7 +77,8 @@ router.get('/getOne/:id', async (req, res) => {
 })
 
 //Update by ID Method
-router.patch('/update/:id', async (req, res) => {
+router.put('/update/:id', async (req, res) => {
+    console.log(req.params, req.body)
     try {
         const id = req.params.id;
         const updatedData = req.body;
