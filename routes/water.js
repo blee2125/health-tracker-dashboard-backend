@@ -6,16 +6,22 @@ module.exports = router;
 
 //Post Method
 router.post('/post', async (req, res) => {
-    const waterData = new WaterModel({
-        glasses: req.body.glasses
-    })
+    let searchDate = req.body.date
 
-    try {
-        const dataToSave = await waterData.save();
-        res.status(200).json(dataToSave)
+    try{
+        const checkWaterData = await WaterModel.exists({'time': { '$regex' : searchDate, '$options' : 'i' }});
+        if (checkWaterData !== null) {
+
+        } else {
+            const waterData = new WaterModel({
+                glasses: req.body.glasses
+            })
+            const dataToSave = await waterData.save();
+            res.status(200).json(dataToSave)
+        }
     }
-    catch (error) {
-        res.status(400).json({message: error.message})
+    catch(error){
+        res.status(500).json({message: error.message})
     }
 })
 
@@ -78,7 +84,6 @@ router.get('/getOne/:id', async (req, res) => {
 
 //Update by ID Method
 router.put('/update/:id', async (req, res) => {
-    console.log(req.params, req.body)
     try {
         const id = req.params.id;
         const updatedData = req.body;
