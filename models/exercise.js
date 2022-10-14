@@ -6,15 +6,15 @@ const dataSchema = new mongoose.Schema({
         type: String
     },
     duration: {
-        required: true,
+        required: false,
         type: Number
     },
     timeOfExercise: {
-        required: true,
+        required: false,
         type: Date
     },
     typeOfExercise: {
-        required: true,
+        required: false,
         type: String
     },
     time: {
