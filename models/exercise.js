@@ -16,7 +16,14 @@ const dataSchema = new mongoose.Schema({
     typeOfExercise: {
         required: true,
         type: text
+    },
+    time: {
+        required: true,
+        type: String,
+        default: () => { return new Date() }
     }
 })
+
+dataSchema.set('timestamps', true);
 
 module.exports = mongoose.model('Exercise', dataSchema)
