@@ -6,7 +6,7 @@ module.exports = router;
 
 //Post Method
 router.post('/post', async (req, res) => {
-    console.log(req)
+    console.log(req.body)
     try{
         const exerciseData = new ExerciseModel({
             exerciseName: req.body.exerciseName,
@@ -71,6 +71,19 @@ router.put('/update/:id', async (req, res) => {
         )
 
         res.send(result)
+    }
+    catch (error) {
+        res.status(400).json({ message: error.message })
+    }
+})
+
+//Delete by ID Method
+router.delete('/delete/:id', async (req, res) => {
+    try {
+        console.log(req.params)
+        const id = req.params.id;
+        const exerciseData = await ExerciseModel.findByIdAndDelete(id)
+        res.send(`Document with ${exerciseData._id} glasses has been deleted..`)
     }
     catch (error) {
         res.status(400).json({ message: error.message })
