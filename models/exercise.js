@@ -11,7 +11,7 @@ const dataSchema = new mongoose.Schema({
     },
     timeOfExercise: {
         required: false,
-        type: Date
+        type: String
     },
     typeOfExercise: {
         required: false,
