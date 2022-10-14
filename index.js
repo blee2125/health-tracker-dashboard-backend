@@ -33,3 +33,6 @@ app.listen(port, () => {
 
 const water = require('./routes/water');
 app.use('/api/water', water)
+
+const exercise = require('./routes/exercise');
+app.use('/api/exercise', exercise)
