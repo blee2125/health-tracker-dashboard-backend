@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 const dataSchema = new mongoose.Schema({
     exerciseName: {
         required: true,
-        type: Text
+        type: String
     },
     duration: {
         required: true,
@@ -15,7 +15,7 @@ const dataSchema = new mongoose.Schema({
     },
     typeOfExercise: {
         required: true,
-        type: text
+        type: String
     },
     time: {
         required: true,
