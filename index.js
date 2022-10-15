@@ -36,3 +36,6 @@ app.use('/api/water', water)
 
 const exercise = require('./routes/exercise');
 app.use('/api/exercise', exercise)
+
+const food = require('./routes/food');
+app.use('/api/food', food)
