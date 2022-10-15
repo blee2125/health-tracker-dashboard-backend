@@ -6,7 +6,6 @@ module.exports = router;
 
 //Post Method
 router.post('/post', async (req, res) => {
-    console.log(req.body)
     try{
         const foodData = new FoodModel({
             foodName: req.body.foodName,
@@ -69,7 +68,7 @@ router.get('/getAll', async (req, res) => {
 router.put('/update/:id', async (req, res) => {
     try {
         const id = req.params.id;
-        const updatedData = req.body;
+        const updatedData = req.body.foodObject;
         const options = { new: true };
 
         const result = await FoodModel.findByIdAndUpdate(
