@@ -6,7 +6,6 @@ module.exports = router;
 
 //Post Method
 router.post('/post', async (req, res) => {
-    console.log(req.body)
     try{
         const exerciseData = new ExerciseModel({
             exerciseName: req.body.exerciseName,
@@ -63,13 +62,12 @@ router.get('/getOne/:id', async (req, res) => {
 router.put('/update/:id', async (req, res) => {
     try {
         const id = req.params.id;
-        const updatedData = req.body;
+        const updatedData = req.body.exerciseObject;
         const options = { new: true };
 
         const result = await ExerciseModel.findByIdAndUpdate(
             id, updatedData, options
         )
-
         res.send(result)
     }
     catch (error) {
@@ -80,7 +78,6 @@ router.put('/update/:id', async (req, res) => {
 //Delete by ID Method
 router.delete('/delete/:id', async (req, res) => {
     try {
-        console.log(req.params)
         const id = req.params.id;
         const exerciseData = await ExerciseModel.findByIdAndDelete(id)
         res.send(`Document with ${exerciseData._id} glasses has been deleted..`)
