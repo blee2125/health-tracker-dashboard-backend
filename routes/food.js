@@ -8,8 +8,8 @@ module.exports = router;
 router.post('/post', async (req, res) => {
     try{
         const foodData = new FoodModel({
-            foodName: req.body.foodName,
-            totalCalories: req.body.totalCalories,
+            name: req.body.name,
+            calories: req.body.calories,
             timeOfConsumption: req.body.timeOfConsumption,
             meal: req.body.meal,
             placeOfConsumption: req.body.placeOfConsumption,
