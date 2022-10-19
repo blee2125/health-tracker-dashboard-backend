@@ -11,16 +11,17 @@ const database = mongoose.connection;
 database.on('error', (error) => {
     console.log(error)
 })
-
 database.once('connected', () => {
     console.log('Database Connected');
 })
+
 const app = express();
 
 app.use(express.json());
 
 app.use(cors())
 
+// Port
 var port = process.env.PORT || 8000;
 
 app.listen(port, () => {
@@ -28,9 +29,6 @@ app.listen(port, () => {
 })
 
 // Routes
-//const routes = require('./routes/routes');
-//app.use('/api', routes)
-
 const water = require('./routes/water');
 app.use('/api/water', water)
 
@@ -39,3 +37,6 @@ app.use('/api/exercise', exercise)
 
 const food = require('./routes/food');
 app.use('/api/food', food)
+
+const external = require('./routes/external');
+app.use('/api/external', external)
