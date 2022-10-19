@@ -1,11 +1,11 @@
 const mongoose = require('mongoose');
 
 const dataSchema = new mongoose.Schema({
-    foodName: {
+    name: {
         required: true,
         type: String
     },
-    totalCalories: {
+    calories: {
         required: false,
         type: Number
     },
