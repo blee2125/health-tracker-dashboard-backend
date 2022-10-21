@@ -40,3 +40,6 @@ app.use('/api/food', food)
 
 const external = require('./routes/external');
 app.use('/api/external', external)
+
+const user = require('./routes/user');
+app.use('/api/user', user)
