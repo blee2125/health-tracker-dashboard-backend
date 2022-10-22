@@ -60,7 +60,8 @@ router.post('/login', async (req, res) => {
                                     message: "Sign in - Successful",
                                     token: token,
                                     id: dbUser._id,
-                                    username: dbUser.username
+                                    username: dbUser.username,
+                                    email: dbUser.email
                                 })
                             }
                         )
