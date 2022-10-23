@@ -9,10 +9,8 @@ const auth = require("../middleware/auth");
 //Post Method
 router.post('/post', auth, async (req, res) => {
     let searchDate = req.body.date
-    console.log(req.body)
     try{
         const checkWaterData = await WaterModel.find({'time': { '$regex' : searchDate, '$options' : 'i' }});
-        console.log('1')
         if (checkWaterData !== null) {
             const waterIdSearch = checkWaterData.filter(w => w.userId === req.user)
 
@@ -35,7 +33,6 @@ router.post('/post', auth, async (req, res) => {
 
 //Get by date (time property) Method
 router.get('/searchByDate', auth, async (req, res) => {
-    console.log('waterdate:', req.user)
     if (!req._parsedUrl.query) {
         return
     }
@@ -45,7 +42,6 @@ router.get('/searchByDate', auth, async (req, res) => {
     try{
         const waterData = await WaterModel.find({'time': { '$regex' : `${searchDateFinal[0]} ${searchDateFinal[1]} ${searchDateFinal[2]}`, '$options' : 'i' }});
         const waterIdSearch = waterData.filter(w => w.userId === req.user)
-        console.log(waterIdSearch)
         res.json(waterIdSearch)
     }
     catch(error){
