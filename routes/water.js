@@ -4,20 +4,28 @@ const WaterModel = require('../models/water');
 
 module.exports = router;
 
+const auth = require("../middleware/auth");
+
 //Post Method
-router.post('/post', async (req, res) => {
+router.post('/post', auth, async (req, res) => {
     let searchDate = req.body.date
-
+    console.log(req.body)
     try{
-        const checkWaterData = await WaterModel.exists({'time': { '$regex' : searchDate, '$options' : 'i' }});
+        const checkWaterData = await WaterModel.find({'time': { '$regex' : searchDate, '$options' : 'i' }});
+        console.log('1')
         if (checkWaterData !== null) {
+            const waterIdSearch = checkWaterData.filter(w => w.userId === req.user)
 
-        } else {
-            const waterData = new WaterModel({
-                glasses: req.body.glasses
-            })
-            const dataToSave = await waterData.save();
-            res.status(200).json(dataToSave)
+            if (waterIdSearch.length > 0) {
+                
+            } else {
+                const waterData = new WaterModel({
+                    glasses: req.body.glasses,
+                    userId: req.user
+                })
+                const dataToSave = await waterData.save();
+                res.status(200).json(dataToSave)
+            }
         }
     }
     catch(error){
@@ -26,21 +34,27 @@ router.post('/post', async (req, res) => {
 })
 
 //Get by date (time property) Method
-router.get('/searchByDate', async (req, res) => {
+router.get('/searchByDate', auth, async (req, res) => {
+    console.log('waterdate:', req.user)
+    if (!req._parsedUrl.query) {
+        return
+    }
     let searchDate = req._parsedUrl.query
     let searchDate2 = searchDate.split('=')
     let searchDateFinal = searchDate2[1].toString().split('+')
     try{
         const waterData = await WaterModel.find({'time': { '$regex' : `${searchDateFinal[0]} ${searchDateFinal[1]} ${searchDateFinal[2]}`, '$options' : 'i' }});
-        res.json(waterData)
+        const waterIdSearch = waterData.filter(w => w.userId === req.user)
+        console.log(waterIdSearch)
+        res.json(waterIdSearch)
     }
     catch(error){
         res.status(500).json({message: error.message})
     }
 })
 
-//Get by date (createdAt property) Method
-router.get('/getByDates', async (req, res) => {
+//Get by date (createdAt property) Method - not working with auth yet
+router.get('/getByDates', auth, async (req, res) => {
     try{
         let start = new Date("2022-10-10"); // update to accept external value
         let end = new Date("2022-10-31");
@@ -60,8 +74,8 @@ router.get('/getByDates', async (req, res) => {
     }
 })
 
-//Get all Method
-router.get('/getAll', async (req, res) => {
+//Get all Method - not working with auth yet
+router.get('/getAll', auth, async (req, res) => {
     try{
         const waterData = await WaterModel.find();
         res.json(waterData)
@@ -72,7 +86,7 @@ router.get('/getAll', async (req, res) => {
 })
 
 //Get by ID Method
-router.get('/getOne/:id', async (req, res) => {
+router.get('/getOne/:id', auth, async (req, res) => {
     try{
         const waterData = await WaterModel.findById(req.params.id);
         res.json(waterData)
@@ -83,7 +97,7 @@ router.get('/getOne/:id', async (req, res) => {
 })
 
 //Update by ID Method
-router.put('/update/:id', async (req, res) => {
+router.put('/update/:id', auth, async (req, res) => {
     try {
         const id = req.params.id;
         const updatedData = req.body;
@@ -101,7 +115,7 @@ router.put('/update/:id', async (req, res) => {
 })
 
 //Delete by ID Method
-router.delete('/delete/:id', async (req, res) => {
+router.delete('/delete/:id', auth, async (req, res) => {
     try {
         const id = req.params.id;
         const waterData = await WaterModel.findByIdAndDelete(id)
