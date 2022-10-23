@@ -1,17 +1,19 @@
 const express = require('express');
 const router = express.Router()
 const ExerciseModel = require('../models/exercise');
+const auth = require("../middleware/auth");
 
 module.exports = router;
 
 //Post Method
-router.post('/post', async (req, res) => {
+router.post('/post', auth, async (req, res) => {
     try{
         const exerciseData = new ExerciseModel({
             exerciseName: req.body.exerciseName,
             duration: req.body.duration,
             timeOfExercise: req.body.timeOfExercise,
-            typeOfExercise: req.body.typeOfExercise
+            typeOfExercise: req.body.typeOfExercise,
+            userId: req.user
         })
         const dataToSave = await exerciseData.save();
         res.status(200).json(dataToSave)
@@ -22,7 +24,7 @@ router.post('/post', async (req, res) => {
 })
 
 //Get by date (time property) Method
-router.get('/searchByDate', async (req, res) => {
+router.get('/searchByDate', auth, async (req, res) => {
     let searchDate = req._parsedUrl.query
     let searchDate2 = searchDate.split('=')
     let searchDateFinal = searchDate2[1].toString().split('+')
@@ -36,10 +38,11 @@ router.get('/searchByDate', async (req, res) => {
 })
 
 //Get all Method
-router.get('/getAll', async (req, res) => {
+router.get('/getAll', auth, async (req, res) => {
     try{
         const exerciseData = await ExerciseModel.find();
-        res.json(exerciseData)
+        const exerciseIdSearch = exerciseData.filter(exercise => exercise.userId === req.user)
+        res.json(exerciseIdSearch)
     }
     catch(error){
         res.status(500).json({message: error.message})
@@ -47,7 +50,7 @@ router.get('/getAll', async (req, res) => {
 })
 
 //Get by ID Method
-router.get('/getOne/:id', async (req, res) => {
+router.get('/getOne/:id', auth, async (req, res) => {
     try{
         const exerciseData = await ExerciseModel.findById(req.params.id);
         res.json(exerciseData)
@@ -59,7 +62,7 @@ router.get('/getOne/:id', async (req, res) => {
 
 
 //Update by ID Method
-router.put('/update/:id', async (req, res) => {
+router.put('/update/:id', auth, async (req, res) => {
     try {
         const id = req.params.id;
         const updatedData = req.body.exerciseObject;
@@ -76,7 +79,7 @@ router.put('/update/:id', async (req, res) => {
 })
 
 //Delete by ID Method
-router.delete('/delete/:id', async (req, res) => {
+router.delete('/delete/:id', auth, async (req, res) => {
     try {
         const id = req.params.id;
         const exerciseData = await ExerciseModel.findByIdAndDelete(id)
