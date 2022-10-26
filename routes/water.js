@@ -49,21 +49,34 @@ router.get('/searchByDate', auth, async (req, res) => {
     }
 })
 
-//Get by date (createdAt property) Method - not working with auth yet
-router.get('/getByDates', auth, async (req, res) => {
+//Get by date (createdAt property) Method
+//(params: ?7+days+GMT) accepts days and timezone (timezone not yet working)
+router.get('/getSevenDays', auth, async (req, res) => {
+    //console.log(req._parsedUrl.query, req.user)
     try{
-        let start = new Date("2022-10-10"); // update to accept external value
-        let end = new Date("2022-10-31");
-        console.log(start)
+        const days = req._parsedUrl.query.split('+')[0]
+        //console.log(days)
+        // const timezone = req._parsedUrl.query.split('+')[2]
+        // console.log(timezone)
 
-        let curDate = new Date()
-        console.log(curDate)
+        // let offset = new Date()
+        // let off2 = offset.getTimezoneOffset()/60
+        // console.log(off2, offset)
 
-        end.setUTCHours(23,59,59,999);
-        console.log(end.toISOString())
-        const waterData = await WaterModel.find({'createdAt': {$gte: start, $lt: end}});
-        res.json(waterData)
-        console.log(waterData)
+        let sevenbeforetoday = new Date()
+        sevenbeforetoday.setUTCHours(0,0,0,0)
+        sevenbeforetoday.setHours(sevenbeforetoday.getHours() + 6) //6 = offset for GMT
+        sevenbeforetoday.setDate(sevenbeforetoday.getDate() - (days - 1))
+        //console.log(sevenbeforetoday)
+
+        let today = new Date()
+        today.setUTCHours(23,59,59,999);
+        today.setHours(today.getHours() + 6)
+        console.log(today)
+
+        const waterData = await WaterModel.find({'createdAt': {$gte: sevenbeforetoday, $lt: today}});
+        const waterIdSearch = waterData.filter(w => w.userId === req.user)
+        res.json(waterIdSearch)
     }
     catch(error){
         res.status(500).json({message: error.message})
