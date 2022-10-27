@@ -23,14 +23,18 @@ router.post('/post', auth, async (req, res) => {
     }
 })
 
-//Get by date (time property) Method
+//Get by date (time property) Method (?date=Oct+27+2022)
 router.get('/searchByDate', auth, async (req, res) => {
+    if (!req._parsedUrl.query) {
+        return
+    }
     let searchDate = req._parsedUrl.query
     let searchDate2 = searchDate.split('=')
     let searchDateFinal = searchDate2[1].toString().split('+')
     try{
         const exerciseData = await ExerciseModel.find({'time': { '$regex' : `${searchDateFinal[0]} ${searchDateFinal[1]} ${searchDateFinal[2]}`, '$options' : 'i' }});
-        res.json(exerciseData)
+        const exerciseIdSearch = exerciseData.filter(e => e.userId === req.user)
+        res.json(exerciseIdSearch)
     }
     catch(error){
         res.status(500).json({message: error.message})
