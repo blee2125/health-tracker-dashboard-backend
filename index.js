@@ -43,3 +43,6 @@ app.use('/api/external', external)
 
 const user = require('./routes/user');
 app.use('/api/user', user)
+
+const sleep = require('./routes/sleep');
+app.use('/api/sleep', sleep)
