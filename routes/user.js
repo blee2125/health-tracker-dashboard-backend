@@ -31,7 +31,8 @@ router.post('/register', async (req, res) => {
         const dbUser = new User({
             username: user.username.toLowerCase(),
             email: user.email.toLowerCase(),
-            password: user.password
+            password: user.password,
+            height: user.height
         })
         dbUser.save()
         res.json({message: "Account created"})

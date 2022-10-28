@@ -12,6 +12,10 @@ const dataSchema = new mongoose.Schema({
     password: {
         required: true,
         type: String
+    },
+    height: {
+        required: false,
+        type: String
     }
 })
 
