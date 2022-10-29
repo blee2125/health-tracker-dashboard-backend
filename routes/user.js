@@ -65,7 +65,8 @@ router.post('/login', async (req, res) => {
                                     token: token,
                                     id: dbUser._id,
                                     username: dbUser.username,
-                                    email: dbUser.email
+                                    email: dbUser.email,
+                                    height: dbUser.height
                                 })
                             }
                         )
@@ -98,3 +99,19 @@ router.put('/changepassword', auth, async (req, res) => {
         })
 })
 
+// Add height to user
+router.patch('/addheight', auth, async (req, res) => {
+    User.findById(req.user)
+        .then(dbUser => {
+            if (!dbUser) {
+                return res.json({message: "Invalid user"})
+            }
+            if (dbUser) {
+                dbUser.height = req.body.height
+                dbUser.save()
+                res.json({user: dbUser,message: "Height Added"})
+            } else {
+                return res.json({message: "Error adding height"})
+            }
+        })
+})
