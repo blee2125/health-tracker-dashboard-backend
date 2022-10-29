@@ -66,7 +66,8 @@ router.post('/login', async (req, res) => {
                                     id: dbUser._id,
                                     username: dbUser.username,
                                     email: dbUser.email,
-                                    height: dbUser.height
+                                    height: dbUser.height,
+                                    createdAt: dbUser.createdAt
                                 })
                             }
                         )
