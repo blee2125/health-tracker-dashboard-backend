@@ -60,6 +60,24 @@ router.get('/searchByDate', auth, async (req, res) => {
     }
 })
 
+//Get by date (time property) Method - not working with auth yet
+router.get('/getFoodToday', auth, async (req, res) => {
+    if (!req._parsedUrl.query) {
+        return
+    }
+    let searchDate = req._parsedUrl.query
+    let searchDate2 = searchDate.split('=')
+    let searchDateFinal = searchDate2[1].toString().split('+')
+    try{
+        const foodData = await FoodModel.find({'time': { '$regex' : `${searchDateFinal[0]} ${searchDateFinal[1]} ${searchDateFinal[2]}`, '$options' : 'i' }});
+        const foodIdSearch = foodData.filter(f => f.userId === req.user)
+        res.json(foodIdSearch)
+    }
+    catch(error){
+        res.status(500).json({message: error.message})
+    }
+})
+
 //Get all Method
 router.get('/getAll', auth, async (req, res) => {
     try{
