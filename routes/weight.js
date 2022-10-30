@@ -33,3 +33,26 @@ router.get('/getcurrentweight', auth, async (req, res) => {
         res.status(500).json({message: error.message})
     }
 })
+
+//Get by date (createdAt property) Method
+router.get('/getLast30Days', auth, async (req, res) => {
+    try{
+        //30 days before today
+        let monthbeforetoday = new Date()
+        monthbeforetoday.setUTCHours(0,0,0,0)
+        monthbeforetoday.setHours(monthbeforetoday.getHours() + 6) //6 = offset for GMT
+        monthbeforetoday.setDate(monthbeforetoday.getDate() - (30))
+
+        //today
+        let today = new Date()
+        today.setUTCHours(23,59,59,999);
+        today.setHours(today.getHours() + 6)
+
+        const weightData = await WeightModel.find({'createdAt': {$gte: monthbeforetoday, $lt: today}});
+        const weightIdSearch = weightData.filter(w => w.userId === req.user)
+        res.json(weightIdSearch)
+    }
+    catch(error){
+        res.status(500).json({message: error.message})
+    }
+})
