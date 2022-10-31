@@ -16,6 +16,10 @@ const dataSchema = new mongoose.Schema({
     height: {
         required: false,
         type: String
+    },
+    birthday: {
+        required: false,
+        type: String
     }
 })
 
