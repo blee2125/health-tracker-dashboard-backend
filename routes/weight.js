@@ -56,3 +56,15 @@ router.get('/getLast30Days', auth, async (req, res) => {
         res.status(500).json({message: error.message})
     }
 })
+
+//Delete all for user
+router.delete('/deleteall', auth, async (req, res) => {
+    try {
+        const weightData = await WeightModel.deleteMany({'userId': req.user})
+        console.log('deleted')
+        res.send(`ALL WEIGHT DATA DELETED - Total: ${weightData.deletedCount}`)
+    }
+    catch (error) {
+        res.status(400).json({ message: error.message })
+    }
+})
