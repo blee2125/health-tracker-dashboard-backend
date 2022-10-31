@@ -49,3 +49,6 @@ app.use('/api/sleep', sleep)
 
 const weight = require('./routes/weight');
 app.use('/api/weight', weight)
+
+const settings = require('./routes/settings');
+app.use('/api/settings', settings)
