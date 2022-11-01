@@ -8,6 +8,7 @@ const auth = require("../middleware/auth");
 
 //post/create settings
 router.post('/post', auth, async (req, res) => {
+    console.log(req.body)
     const userId = req.user;
     try{
         const checkForSettings = await SettingsModel.find({'userId': userId});
@@ -34,8 +35,16 @@ router.post('/post', auth, async (req, res) => {
 router.get('/get', auth, async (req, res) => {
     try{
         const userId = req.user;
-        const settingsData = await SettingsModel.find({'userId': userId});
-        res.json(settingsData)
+        const checkForSettings = await SettingsModel.find({'userId': userId});
+        if (checkForSettings.length === 0) {
+            const settingsData = new SettingsModel({
+                userId: req.user
+            })
+            const dataToSave = await settingsData.save();
+            res.status(200).json(dataToSave)
+        } else {
+            res.json(checkForSettings)
+        }
     }
     catch(error){
         res.status(500).json({message: error.message})
@@ -44,12 +53,21 @@ router.get('/get', auth, async (req, res) => {
 
 //update settings
 router.patch('/update', auth, async (req, res) => {
+    console.log(req.body)
     try {
         const userId = req.user;
-        const updatedData = req.body.settingsObject;
-        const result = await SettingsModel.updateOne({userId: userId}, {$set: updatedData});
-        const settingsData = await SettingsModel.find({'userId': userId});
-        res.send(settingsData)
+        const updatedData = req.body;
+        const checkForSettings = await SettingsModel.find({'userId': userId});
+        if (checkForSettings.length === 0) {
+            const settingsData = new SettingsModel(updatedData)
+            const dataToSave = await settingsData.save();
+            res.status(200).json(dataToSave)
+        } else {
+            console.log(updatedData)
+            const result = await SettingsModel.updateOne({userId: userId}, {$set: updatedData});
+            const settingsData = await SettingsModel.find({'userId': userId});
+            res.send(settingsData)
+        }
     }
     catch (error) {
         res.status(400).json({ message: error.message })
