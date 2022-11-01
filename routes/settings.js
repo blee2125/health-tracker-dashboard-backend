@@ -8,7 +8,6 @@ const auth = require("../middleware/auth");
 
 //post/create settings
 router.post('/post', auth, async (req, res) => {
-    console.log(req.body)
     const userId = req.user;
     try{
         const checkForSettings = await SettingsModel.find({'userId': userId});
@@ -53,7 +52,6 @@ router.get('/get', auth, async (req, res) => {
 
 //update settings
 router.patch('/update', auth, async (req, res) => {
-    console.log(req.body)
     try {
         const userId = req.user;
         const updatedData = req.body;
@@ -63,7 +61,6 @@ router.patch('/update', auth, async (req, res) => {
             const dataToSave = await settingsData.save();
             res.status(200).json(dataToSave)
         } else {
-            console.log(updatedData)
             const result = await SettingsModel.updateOne({userId: userId}, {$set: updatedData});
             const settingsData = await SettingsModel.find({'userId': userId});
             res.send(settingsData)
