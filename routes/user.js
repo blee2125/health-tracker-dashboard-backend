@@ -135,3 +135,15 @@ router.patch('/addbirthday', auth, async (req, res) => {
             }
         })
 })
+
+// delete account
+router.delete('/delete', auth, async (req, res) => {
+    try {
+        const id = req.user;
+        const userData = await User.findByIdAndDelete(id)
+        res.send(`Account deleted`)
+    }
+    catch (error) {
+        res.status(400).json({ message: error.message })
+    }
+})
