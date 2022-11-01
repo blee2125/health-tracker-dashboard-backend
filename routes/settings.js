@@ -40,7 +40,7 @@ router.get('/get', auth, async (req, res) => {
                 userId: req.user
             })
             const dataToSave = await settingsData.save();
-            res.status(200).json(dataToSave)
+            res.status(200).json([dataToSave])
         } else {
             res.json(checkForSettings)
         }
