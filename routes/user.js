@@ -33,7 +33,8 @@ router.post('/register', async (req, res) => {
             email: user.email.toLowerCase(),
             password: user.password,
             height: user.height,
-            birthday: user.birthday
+            birthday: user.birthday,
+            gender: user.gender
         })
         dbUser.save()
         res.json({message: "Account created"})
@@ -69,6 +70,7 @@ router.post('/login', async (req, res) => {
                                     email: dbUser.email,
                                     height: dbUser.height,
                                     birthday: dbUser.birthday,
+                                    gender: dbUser.gender,
                                     createdAt: dbUser.createdAt
                                 })
                             }
@@ -132,6 +134,23 @@ router.patch('/addbirthday', auth, async (req, res) => {
                 res.json({user: dbUser,message: "Birthday Added"})
             } else {
                 return res.json({message: "Error adding birthday"})
+            }
+        })
+})
+
+// Add gender to user
+router.patch('/addgender', auth, async (req, res) => {
+    User.findById(req.user)
+        .then(dbUser => {
+            if (!dbUser) {
+                return res.json({message: "Invalid user"})
+            }
+            if (dbUser) {
+                dbUser.gender = req.body.gender
+                dbUser.save()
+                res.json({user: dbUser,message: "Gender Added"})
+            } else {
+                return res.json({message: "Error adding gender"})
             }
         })
 })
