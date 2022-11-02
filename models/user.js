@@ -20,6 +20,10 @@ const dataSchema = new mongoose.Schema({
     birthday: {
         required: false,
         type: String
+    },
+    gender: {
+        required: false,
+        type: String
     }
 })
 
