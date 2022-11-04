@@ -10,16 +10,12 @@ router.post('/post', auth, async (req, res) => {
     try{
         const foodData = new FoodModel({
             name: req.body.name,
-            calories: req.body.calories,
-            timeOfConsumption: req.body.timeOfConsumption,
-            meal: req.body.meal,
-            placeOfConsumption: req.body.placeOfConsumption,
-            withWhom: req.body.withWhom,
-            activity: req.body.activity,
-            mood: req.body.mood,
-            hungerLevel: req.body.hungerLevel,
-            fullness: req.body.fullness,
             amount: req.body.amount,
+            calories: req.body.calories,
+            carbsg: req.body.carbsg,
+            fatg: req.body.fatg,
+            proteing: req.body.proteing,
+            meal: req.body.meal,
             userId: req.user
         })
         const dataToSave = await foodData.save();
