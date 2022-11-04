@@ -5,43 +5,27 @@ const dataSchema = new mongoose.Schema({
         required: true,
         type: String
     },
+    amount: {
+        required: false,
+        type: String
+    },
     calories: {
         required: false,
         type: Number
     },
-    timeOfConsumption: {
+    carbsg: {
         required: false,
-        type: String
+        type: Number
+    },
+    fatg: {
+        required: false,
+        type: Number
+    },
+    proteing: {
+        required: false,
+        type: Number
     },
     meal: {
-        required: false,
-        type: String
-    },    
-    placeOfConsumption: {
-        required: false,
-        type: String
-    },
-    withWhom: {
-        required: false,
-        type: String
-    },    
-    activity: {
-        required: false,
-        type: String
-    },
-    mood: {
-        required: false,
-        type: String
-    },    
-    hungerLevel: {
-        required: false,
-        type: String
-    },
-    fullness: {
-        required: false,
-        type: String
-    },    
-    amount: {
         required: false,
         type: String
     },
