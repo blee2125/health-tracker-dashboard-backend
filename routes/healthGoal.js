@@ -68,10 +68,10 @@ router.get('/getAll', auth, async (req, res) => {
 })
 
 //Update by ID Method - test
-router.put('/update/:id', auth, async (req, res) => {
+router.patch('/update/:id', auth, async (req, res) => {
     try {
         const id = req.params.id;
-        const updatedData = req.body.heatlhGoalObject;
+        const updatedData = req.body;
         const options = { new: true };
 
         const result = await HealthGoalModel.findByIdAndUpdate(
