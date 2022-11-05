@@ -88,9 +88,10 @@ router.get('/getAll', auth, async (req, res) => {
 
 //Update by ID Method
 router.put('/update/:id', auth, async (req, res) => {
+    console.log(req.body)
     try {
         const id = req.params.id;
-        const updatedData = req.body.foodObject;
+        const updatedData = req.body;
         const options = { new: true };
 
         const result = await FoodModel.findByIdAndUpdate(
