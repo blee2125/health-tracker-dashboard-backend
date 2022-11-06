@@ -22,4 +22,5 @@ Frontend built with React and Redux - [Github Link](https://github.com/blee2125/
     - Settings
     - Water
     - Weight
+    - More coming...
 
