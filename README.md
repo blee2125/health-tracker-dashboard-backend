@@ -6,12 +6,12 @@ Built using Express.js and MongoDB
 
 Frontend built with React and Redux - [Github Link](https://github.com/blee2125/health-tracker-dashboard)
 
-## Features
+## Details
 
-* Tech used
+* Features
     - Express.js - Server
     - MongoDB - Database
-    - JWT (JSON Web Tokens)
+    - JWT (JSON Web Tokens) - User Authorization
     - External API connection - nutrition info
 
 * Data Models
