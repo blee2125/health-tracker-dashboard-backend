@@ -11,6 +11,7 @@ router.post('/post', auth, async (req, res) => {
         const healthGoalData = new HealthGoalModel({
             goal: req.body.goal,
             category: req.body.category,
+            repeat: req.body.repeat,
             timeframe: req.body.timeframe,
             endDate: req.body.endDate,
             completed: req.body.completed,

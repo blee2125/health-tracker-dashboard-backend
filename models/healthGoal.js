@@ -9,6 +9,11 @@ const dataSchema = new mongoose.Schema({
         required: false,
         type: String
     },
+    repeat: {
+        required: false,
+        type: Boolean,
+        default: false
+    },
     timeframe: {
         required: false,
         type: String
