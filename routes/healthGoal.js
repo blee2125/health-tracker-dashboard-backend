@@ -9,14 +9,8 @@ module.exports = router;
 router.post('/post', auth, async (req, res) => {
     try{
         const healthGoalData = new HealthGoalModel({
-            goal: req.body.goal,
-            category: req.body.category,
-            repeat: req.body.repeat,
-            timeframe: req.body.timeframe,
-            endDate: req.body.endDate,
-            completed: req.body.completed,
-            startDate: req.body.startDate,
-            userId: req.user
+            ...req.body,
+            ...{userId: req.user}
         })
         const dataToSave = await healthGoalData.save();
         res.status(200).json(dataToSave)
