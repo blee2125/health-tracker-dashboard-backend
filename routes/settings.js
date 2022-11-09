@@ -1,10 +1,8 @@
 const express = require('express');
 const router = express.Router()
 const SettingsModel = require('../models/settings');
-
-module.exports = router;
-
 const auth = require("../middleware/auth");
+module.exports = router;
 
 //post/create settings
 router.post('/post', auth, async (req, res) => {
@@ -13,14 +11,11 @@ router.post('/post', auth, async (req, res) => {
         const checkForSettings = await SettingsModel.find({'userId': userId});
         if (checkForSettings.length === 0) {
             const settingsData = new SettingsModel({
-                collectExerciseData: req.body.collectExerciseData,
-                collectFoodData: req.body.collectFoodData,
-                collectWaterData: req.body.collectWaterData,
-                collectWeightData: req.body.collectWeightData,
-                userId: req.user
+                ...req.body.settings,
+                ...{userId: req.user}
             })
             const dataToSave = await settingsData.save();
-            res.status(200).json(dataToSave)
+            res.status(200).json(dataToSave[0])
         } else {
             res.status(500).json({message: 'already exists'})
         }
@@ -40,9 +35,9 @@ router.get('/get', auth, async (req, res) => {
                 userId: req.user
             })
             const dataToSave = await settingsData.save();
-            res.status(200).json([dataToSave])
+            res.status(200).json(dataToSave[0])
         } else {
-            res.json(checkForSettings)
+            res.json(checkForSettings[0])
         }
     }
     catch(error){
@@ -54,16 +49,16 @@ router.get('/get', auth, async (req, res) => {
 router.patch('/update', auth, async (req, res) => {
     try {
         const userId = req.user;
-        const updatedData = req.body;
+        const updatedData = req.body.settings;
         const checkForSettings = await SettingsModel.find({'userId': userId});
         if (checkForSettings.length === 0) {
             const settingsData = new SettingsModel(updatedData)
             const dataToSave = await settingsData.save();
-            res.status(200).json(dataToSave)
+            res.status(200).json(dataToSave[0])
         } else {
-            const result = await SettingsModel.updateOne({userId: userId}, {$set: updatedData});
+            const result = await SettingsModel.updateOne({userId: userId}, updatedData);
             const settingsData = await SettingsModel.find({'userId': userId});
-            res.send(settingsData)
+            res.send(settingsData[0])
         }
     }
     catch (error) {
