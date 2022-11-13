@@ -77,9 +77,8 @@ router.get('/getFoodToday', auth, async (req, res) => {
 //Get all Method
 router.get('/getAll', auth, async (req, res) => {
     try{
-        const foodData = await FoodModel.find();
-        const foodIdSearch = foodData.filter(food => food.userId === req.user)
-        res.json(foodIdSearch)
+        const foodData = await FoodModel.find({'userId': req.user});
+        res.json(foodData)
     }
     catch(error){
         res.status(500).json({message: error.message})

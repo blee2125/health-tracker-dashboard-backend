@@ -62,9 +62,8 @@ router.get('/getExerciseToday', auth, async (req, res) => {
 //Get all Method
 router.get('/getAll', auth, async (req, res) => {
     try{
-        const exerciseData = await ExerciseModel.find();
-        const exerciseIdSearch = exerciseData.filter(exercise => exercise.userId === req.user)
-        res.json(exerciseIdSearch)
+        const exerciseData = await ExerciseModel.find({'userId': req.user});
+        res.json(exerciseData)
     }
     catch(error){
         res.status(500).json({message: error.message})
