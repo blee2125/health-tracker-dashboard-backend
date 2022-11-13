@@ -53,9 +53,8 @@ router.get('/searchByDate', auth, async (req, res) => {
 //Get all Method - test
 router.get('/getAll', auth, async (req, res) => {
     try{
-        const healthGoalData = await HealthGoalModel.find();
-        const goalIdSearch = healthGoalData.filter(goal => goal.userId === req.user)
-        res.json(goalIdSearch)
+        const healthGoalData = await HealthGoalModel.find({'userId': req.user});
+        res.json(healthGoalData)
     }
     catch(error){
         res.status(500).json({message: error.message})

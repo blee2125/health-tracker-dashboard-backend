@@ -5,7 +5,7 @@ const auth = require("../middleware/auth");
 
 module.exports = router;
 
-//Post Method - test
+//Post Method
 router.post('/post', auth, async (req, res) => {
     console.log(req.body)
     try{
@@ -51,12 +51,11 @@ router.get('/searchByDate', auth, async (req, res) => {
     }
 })
 
-//Get all Method - test
+//Get all Method
 router.get('/getAll', auth, async (req, res) => {
     try{
-        const bloodPressureData = await BloodPressureModel.find();
-        const bpIdSearch = bloodPressureData.filter(bp => bp.userId === req.user)
-        res.json(bpIdSearch)
+        const bloodPressureData = await BloodPressureModel.find({'userId': req.user});
+        res.json(bloodPressureData)
     }
     catch(error){
         res.status(500).json({message: error.message})
@@ -81,7 +80,7 @@ router.patch('/update/:id', auth, async (req, res) => {
     }
 })
 
-//Delete by ID Method - test
+//Delete by ID Method
 router.delete('/delete/:id', auth, async (req, res) => {
     try {
         const id = req.params.id;
@@ -93,7 +92,7 @@ router.delete('/delete/:id', auth, async (req, res) => {
     }
 })
 
-//Delete all - test
+//Delete all
 router.delete('/deleteall', auth, async (req, res) => {
     try {
         const bloodPressureData = await BloodPressureModel.deleteMany({'userId': req.user})

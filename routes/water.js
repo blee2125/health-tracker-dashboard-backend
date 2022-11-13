@@ -83,10 +83,10 @@ router.get('/getSevenDays', auth, async (req, res) => {
     }
 })
 
-//Get all Method - not working with auth yet
+//Get all Method
 router.get('/getAll', auth, async (req, res) => {
     try{
-        const waterData = await WaterModel.find();
+        const waterData = await WaterModel.find({'userId': userId});
         res.json(waterData)
     }
     catch(error){
