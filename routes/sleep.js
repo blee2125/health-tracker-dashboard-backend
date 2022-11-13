@@ -93,3 +93,15 @@ router.delete('/delete/:id', auth, async (req, res) => {
         res.status(400).json({ message: error.message })
     }
 })
+
+//Delete all sleep
+router.delete('/deleteall', auth, async (req, res) => {
+    try {
+        const sleepData = await SleepModel.deleteMany({'userId': req.user})
+        console.log('deleted')
+        res.send(`ALL SLEEP DATA DELETED - Total: ${sleepData.deletedCount}`)
+    }
+    catch (error) {
+        res.status(400).json({ message: error.message })
+    }
+})
