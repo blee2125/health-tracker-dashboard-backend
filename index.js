@@ -55,3 +55,9 @@ app.use('/api/settings', settings)
 
 const healthGoal = require('./routes/healthGoal');
 app.use('/api/healthgoal', healthGoal)
+
+const bloodPressure = require('./routes/bloodPressure');
+app.use('/api/bloodpressure', bloodPressure)
+
+const heartRate = require('./routes/heartRate');
+app.use('/api/heartrate', heartRate)
