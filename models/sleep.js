@@ -9,6 +9,10 @@ const dataSchema = new mongoose.Schema({
         required: true,
         type: String
     },
+    totalTime: {
+        required: true,
+        type: Number
+    },
     activityBefore: {
         required: false,
         type: String
