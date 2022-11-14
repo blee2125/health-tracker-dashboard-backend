@@ -9,10 +9,8 @@ module.exports = router;
 router.post('/post', auth, async (req, res) => {
     try{
         const sleepData = new SleepModel({
-            bedtime: req.body.bedtime,
-            wakeUpTime: req.body.wakeUpTime,
-            activityBefore: req.body.activityBefore,
-            userId: req.user
+            ...req.body,
+            ...{userId: req.user}
         })
         const dataToSave = await sleepData.save();
         res.status(200).json(dataToSave)
